@@ -1,0 +1,4 @@
+---
+xubuntu01_packages:
+  - openssh-server
+  - tightvncserver
