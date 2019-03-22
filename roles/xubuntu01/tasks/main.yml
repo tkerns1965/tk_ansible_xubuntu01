@@ -28,6 +28,7 @@
 
 - name: Backup existing xstartup file
   command: mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+  arg:
     creates: ~/.vnc/xstartup.bak
 
 - name: Insert new xstartup file
