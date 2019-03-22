@@ -6,5 +6,14 @@
   import_tasks: 01_vnc.yml
   tags: vnc
 
-# - import_tasks: .yml
-#   tags: 
+# - name: Import smb tasks
+#   import_tasks: 02_smb.yml
+#   tags: smb
+
+# - name: Import gnucash tasks
+#   import_tasks: 03_gnucash.yml
+#   tags: gnucash
+
+# - name: Import vscode tasks
+#   import_tasks: 04_vscode.yml
+#   tags: vscode
