@@ -1,0 +1,60 @@
+- name: Execute block as sudo
+  become: yes
+  block:
+    - name: Upgrade all packages
+      apt:
+        force_apt_get: yes
+        name: "*"
+        state: latest
+        update_cache: yes
+
+    - name: Install packages
+      apt:
+        name="{{ xubuntu01_packages }}"
+        state=latest
+
+- name: Set vnc server password
+  expect:
+    command: vncserver :1
+    responses:
+      (?i)password: "{{ vnc_password }}"
+      (?i)verify: "{{ vnc_password }}"
+      (?i)would you like to enter a view-only password (y/n)?: "n"
+    creates: ~/.vnc/passwd
+
+- name: Backup existing xstartup file
+  command: mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+  args:
+    creates: ~/.vnc/xstartup.bak
+
+- name: Insert new xstartup file
+  copy:
+    src: xstartup
+    dest:  ~/.vnc/
+    mode: 0755
+
+- name: Disable xfce4-power-manager & light-locker
+  copy:
+    src: "{{ item }}"
+    dest:  ~/.config/autostart/
+    mode: 0664
+  with_items:
+    - xfce4-power-manager.desktop
+    - light-locker.desktop
+
+- name: Execute block as sudo
+  become: yes
+  block:
+    - name: Create vncserver service
+      template:
+        src: vncserver@.service
+        dest: /etc/systemd/system/
+        mode: 0644
+      register: create_vncsvr_svc
+
+    - name: Enable vncserver service
+      command: "{{ item }}"
+      with_items:
+        - systemctl daemon-reload
+        - systemctl enable vncserver@1.service
+      when: create_vncsvr_svc is changed
