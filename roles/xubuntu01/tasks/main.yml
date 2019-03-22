@@ -33,19 +33,26 @@
 - name: Insert new xstartup file
   copy:
     src: xstartup
-    dest:  ~/.vnc/xstartup
+    dest:  ~/.vnc/
     mode: 0755
+
+- name: Disable xfce4-power-manager
+  copy:
+    src: xfce4-power-manager.desktop
+    dest:  ~/.config/
+    mode: 0664
 
 - name: Execute block as sudo
   become: yes
   block:
-    - name: Create vnc service
+    - name: Create vncserver service
       template:
-        src: ./templates/vnc/vncserver@.service.template
-        dest: /etc/systemd/system/vncserver@.service
+        src: vncserver@.service
+        dest: /etc/systemd/system/
+        mode: 0644
 
-#     - name: Make system aware of vnc service
-#       command: systemctl daemon-reload
-
-#     - name: Enable vnc service
-#       command: systemctl enable vncserver@0.service
+    - name: Enable vncserver service
+      command: "{{ item }}"
+      with_items:
+        - systemctl daemon-reload
+        - systemctl enable vncserver@1.service
