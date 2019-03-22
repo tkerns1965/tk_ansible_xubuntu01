@@ -1,2 +1,4 @@
 ---
+vnc_username: myuser
+vnc_groupname: mygroup
 vnc_password: password
