@@ -14,9 +14,8 @@
 
     - name: Install packages
       apt:
-        name="{{ item }}"
+        name="{{ xubuntu01_packages }}"
         state=latest
-      with_items: "{{ xubuntu01_packages }}"
 
 - name: Set vnc server password
   expect:
