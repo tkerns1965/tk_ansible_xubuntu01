@@ -25,24 +25,24 @@
       (?i)password: "{{ vnc_password }}"
       (?i)verify: "{{ vnc_password }}"
       (?i)would you like to enter a view-only password (y/n)?: "n"
-#     creates: ~/.vnc/xstartup
+    creates: ~/.vnc/passwd
 
-# - name: Backup existing xstartup file
-#   command: mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+- name: Backup existing xstartup file
+  command: mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
 
-# - name: Insert new xstartup file
-#   copy:
-#     src: ./templates/vnc/xstartup.template
-#     dest:  ~/.vnc/xstartup
-#     mode: 0755
+- name: Insert new xstartup file
+  copy:
+    src: xstartup
+    dest:  ~/.vnc/xstartup
+    mode: 0755
 
-# - name: Execute block as sudo
-#   become: yes
-#   block:
-#     - name: Create vnc service
-#       template:
-#         src: ./templates/vnc/vncserver@.service.template
-#         dest: /etc/systemd/system/vncserver@.service
+- name: Execute block as sudo
+  become: yes
+  block:
+    - name: Create vnc service
+      template:
+        src: ./templates/vnc/vncserver@.service.template
+        dest: /etc/systemd/system/vncserver@.service
 
 #     - name: Make system aware of vnc service
 #       command: systemctl daemon-reload
