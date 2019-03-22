@@ -38,7 +38,7 @@
 - name: Disable xfce4-power-manager
   copy:
     src: xfce4-power-manager.desktop
-    dest:  ~/.config/
+    dest:  ~/.config/autostart/
     mode: 0664
 
 - name: Execute block as sudo
