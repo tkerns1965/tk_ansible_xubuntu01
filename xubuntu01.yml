@@ -1,5 +1,6 @@
 ---
 - name: Run xubuntu01 role on local hosts
   hosts: local
-  roles:
-    - xubuntu01
+  tasks:
+    - import_role:
+        name: xubuntu01
