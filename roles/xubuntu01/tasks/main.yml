@@ -54,9 +54,11 @@
         src: vncserver@.service
         dest: /etc/systemd/system/
         mode: 0644
+      register: create_vncsvr_svc
 
     - name: Enable vncserver service
       command: "{{ item }}"
       with_items:
         - systemctl daemon-reload
         - systemctl enable vncserver@1.service
+      when: create_vncsvr_svc is changed
