@@ -35,11 +35,14 @@
     dest:  ~/.vnc/
     mode: 0755
 
-- name: Disable xfce4-power-manager
+- name: Disable xfce4-power-manager & light-locker
   copy:
-    src: xfce4-power-manager.desktop
+    src: "{{ item }}"
     dest:  ~/.config/autostart/
     mode: 0664
+  with_items:
+    - xfce4-power-manager.desktop
+    - light-locker.desktop
 
 - name: Execute block as sudo
   become: yes
