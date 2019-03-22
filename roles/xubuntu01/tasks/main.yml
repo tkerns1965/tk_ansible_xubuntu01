@@ -2,7 +2,8 @@
 - name: Include private variables
   include_vars: private.yml
 
-- import_tasks: 01_vnc.yml
+- name: Import vnc tasks
+  import_tasks: 01_vnc.yml
   tags: vnc
 
 # - import_tasks: .yml
