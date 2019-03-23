@@ -14,6 +14,6 @@
 #   import_tasks: 03_gnucash.yml
 #   tags: gnucash
 
-# - name: Import vscode tasks
-#   import_tasks: 04_vscode.yml
-#   tags: vscode
+- name: Import vscode tasks
+  import_tasks: 04_vscode.yml
+  tags: vscode
