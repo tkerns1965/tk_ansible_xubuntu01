@@ -5,3 +5,14 @@ vnc_packages:
 
 smb_packages:
   - cifs-utils
+
+vscode_packages:
+  - code
+  # - code-insiders
+
+vscode_extensions:
+  - ms-python.python
+
+vscode_python_packages:
+  - pylint
+  - fpdf
