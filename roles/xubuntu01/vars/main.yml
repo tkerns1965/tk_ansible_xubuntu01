@@ -1,4 +1,7 @@
 ---
-xubuntu01_packages:
+vnc_packages:
   - openssh-server
   - tightvncserver
+
+smb_packages:
+  - cifs-utils
