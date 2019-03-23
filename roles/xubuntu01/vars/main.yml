@@ -9,6 +9,7 @@ smb_packages:
 vscode_packages:
   - code
   # - code-insiders
+  - python3-pip
 
 vscode_extensions:
   - ms-python.python
