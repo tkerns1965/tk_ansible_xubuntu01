@@ -1,4 +1,14 @@
 ---
 vnc_username: myuser
 vnc_groupname: mygroup
-vnc_password: password
+vnc_password: mypassword
+
+smb_username: myuser
+smb_password: mypassword
+smb_domain: mydomain
+
+smbmount_name: 
+smbmount_description: 
+smbmount_what: 
+smbmount_where: 
+smbmount_options: 
