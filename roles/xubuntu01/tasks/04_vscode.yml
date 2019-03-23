@@ -2,6 +2,12 @@
 - name: Execute block as sudo
   become: yes
   block:
+    - name: Install curl
+      apt:
+        name: curl
+        state: latest
+        update_cache: yes
+
     - name: Prepare to download vscode
       shell: "{{ item.command }}"
       args:
