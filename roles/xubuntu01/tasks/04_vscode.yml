@@ -17,10 +17,9 @@
 
     - name: Install vscode packages
       apt:
-        name: "{{ item }}"
+        name: "{{ vscode_packages }}"
         state: latest
         update_cache: yes
-      with_items: "{{ vscode_packages }}"
 
     - name: Make vscode files directory
       file:
