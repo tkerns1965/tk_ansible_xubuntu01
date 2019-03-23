@@ -33,3 +33,4 @@
         - "systemctl daemon-reload"
         - "systemctl enable {{ smbmount_name }}.mount"
         - "systemctl start {{ smbmount_name }}.mount"
+      when: create_smb_mount is changed
