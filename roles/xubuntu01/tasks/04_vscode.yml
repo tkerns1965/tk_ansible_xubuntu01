@@ -67,7 +67,12 @@
   register: python3_pip_list
   changed_when: false
 
-- name: Install python packages for vscode
-  command: "python3 -m pip install -U {{ item }} --user"
-  with_items: "{{ vscode_python_packages }}"
-  when: python3_pip_list.stdout_lines | select('match', item) | list | length > 0
+- debug:
+    var: {{ item }}
+  with_items:
+    - python3_pip_list
+
+# - name: Install python packages for vscode
+#   command: "python3 -m pip install -U {{ item }} --user"
+#   with_items: "{{ vscode_python_packages }}"
+#   when: python3_pip_list.stdout_lines | select('match', item) | list | length > 0
