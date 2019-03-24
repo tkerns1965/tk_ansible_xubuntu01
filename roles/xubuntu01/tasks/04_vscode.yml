@@ -68,9 +68,9 @@
   changed_when: false
 
 - debug:
-    var: "{{ item }}"
+    var: python3_pip_list.stdout_lines | select('match', item) | list
   with_items:
-    - python3_pip_list.stdout_lines | select('match', "{{ item }}") | list
+    - vscode_python_packages
 
 # - name: Install python packages for vscode
 #   command: "python3 -m pip install -U {{ item }} --user"
