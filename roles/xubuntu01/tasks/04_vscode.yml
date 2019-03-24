@@ -68,7 +68,8 @@
   changed_when: false
 
 - debug:
-    msg: "{{ python3_pip_list.stdout_lines | select('match', item) | list | length }}"
+    # msg: "{{ python3_pip_list.stdout_lines | select('match', item) | list | length }}"
+    var: "{{ item }}"
   with_items:
     - vscode_python_packages
 
