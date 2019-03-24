@@ -57,9 +57,6 @@
   register: vscode_ext_list
   changed_when: false
 
-- debug:
-    var: vscode_ext_list
-
 - name: Install extensions for vscode
   command: "code --install-extension {{ item }}"
   with_items: "{{ vscode_extensions }}"
