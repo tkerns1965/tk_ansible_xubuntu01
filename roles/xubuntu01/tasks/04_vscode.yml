@@ -59,8 +59,8 @@
 
 - name: Install extensions for vscode
   command: "code --install-extension {{ item }}"
+    when: item not in vscode_ext_list
   with_items: "{{ vscode_extensions }}"
-  when: item not in vscode_ext_list
 
 - name: Install python packages for vscode
   command: "python3 -m pip install -U {{ item }} --user"
