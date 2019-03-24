@@ -68,7 +68,7 @@
   changed_when: false
 
 - debug:
-    var: {{ item }}
+    var: "{{ item }}"
   with_items:
     - python3_pip_list
 
