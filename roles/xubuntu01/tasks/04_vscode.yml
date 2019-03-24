@@ -68,9 +68,9 @@
   changed_when: false
 
 - debug:
-    var: python3_pip_list.stdout_lines
+    var: python3_pip_list.stdout_lines | map('regex_search', 'fpdf')
 
-- name: Install python packages for vscode
-  command: "python3 -m pip install -U {{ item }} --user"
-  with_items: "{{ vscode_python_packages }}"
-  when: python3_pip_list.stdout_lines.find(item) != -1
+# - name: Install python packages for vscode
+#   command: "python3 -m pip install -U {{ item }} --user"
+#   with_items: "{{ vscode_python_packages }}"
+#   when: python3_pip_list.stdout_lines.find(item) != -1
