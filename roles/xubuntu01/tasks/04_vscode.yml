@@ -67,13 +67,7 @@
   register: python3_pip_list
   changed_when: false
 
-  vars:
-    empty_list: [null]
-
-- debug:
-    var: python3_pip_list.stdout_lines | select('match', 'fpdf\s+') | list | length > 0
-
-# - name: Install python packages for vscode
-#   command: "python3 -m pip install -U {{ item }} --user"
-#   with_items: "{{ vscode_python_packages }}"
-#   when: python3_pip_list.stdout_lines.find(item) != -1
+- name: Install python packages for vscode
+  command: "python3 -m pip install -U {{ item }} --user"
+  with_items: "{{ vscode_python_packages }}"
+  when: python3_pip_list.stdout_lines | select('match', item) | list | length > 0
