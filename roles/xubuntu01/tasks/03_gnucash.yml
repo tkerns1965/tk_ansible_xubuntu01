@@ -4,11 +4,10 @@
   block:
     - name: Install packages to build gnucash
       apt:
-        name: "{{ item }}"
+        name: "{{ gnucash_build_packages }}"
         state: latest
         update_cache: yes
         install_recommends: no
-      with_items: "{{ gnucash_build_packages }}"
 
     - name: Make gnucash subfolders
       file:
