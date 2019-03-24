@@ -15,5 +15,5 @@ vscode_extensions:
   - ms-python.python
 
 vscode_python_packages:
-  - pylint
   - fpdf
+  - pylint
