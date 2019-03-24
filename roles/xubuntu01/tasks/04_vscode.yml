@@ -37,11 +37,10 @@
       copy:
         src: "{{ item }}"
         dest: /usr/share/code/
-        creates:
-          - /usr/share/code/libxcb.so.1
-          - /usr/share/code/libxcb.so.1.1.0
-      with_fileglob:
-        - "/usr/lib/x86_64-linux-gnu/libxcb.so.1*"
+        force: no
+      with_items:
+        - /usr/lib/x86_64-linux-gnu/libxcb.so.1
+        - /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
 
     - name: Edit files for vscode
       lineinfile:
