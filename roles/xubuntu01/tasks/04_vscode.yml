@@ -70,7 +70,7 @@
 - debug:
     var: "{{ item }}"
   with_items:
-    - python3_pip_list
+    - python3_pip_list.stdout_lines
 
 # - name: Install python packages for vscode
 #   command: "python3 -m pip install -U {{ item }} --user"
