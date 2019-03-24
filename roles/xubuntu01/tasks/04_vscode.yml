@@ -67,8 +67,8 @@
   register: python3_pip_list
   changed_when: false
 
-vars:
-  empty_list: [null]
+  vars:
+    empty_list: [null]
 
 - debug:
     var: python3_pip_list.stdout_lines | map('regex_search', 'fpdf') | list | difference(empty_list)
