@@ -71,7 +71,7 @@
     empty_list: [null]
 
 - debug:
-    var: python3_pip_list.stdout_lines | map('regex_search', 'fpdf') | list | difference(empty_list)
+    var: python3_pip_list.stdout_lines | map('regex_search', 'fpdf') | list | difference([])
 
 # - name: Install python packages for vscode
 #   command: "python3 -m pip install -U {{ item }} --user"
