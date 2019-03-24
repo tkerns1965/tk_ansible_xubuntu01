@@ -67,10 +67,7 @@
   register: python3_pip_list
   changed_when: false
 
-- debug:
-    var: python3_pip_list
-
 - name: Install python packages for vscode
   command: "python3 -m pip install -U {{ item }} --user"
   with_items: "{{ vscode_python_packages }}"
-  when: item not in python3_pip_list.stdout_lines
+  when: python3_pip_list.stdout_lines.find(item) != -1
