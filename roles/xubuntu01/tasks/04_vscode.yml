@@ -67,6 +67,9 @@
   register: python3_pip_list
   changed_when: false
 
+- debug:
+    var: python3_pip_list.stdout_lines
+
 - name: Install python packages for vscode
   command: "python3 -m pip install -U {{ item }} --user"
   with_items: "{{ vscode_python_packages }}"
