@@ -68,78 +68,46 @@
       vars:
         file_path: "{{ gnucash_fldr }}/SOURCE/libgnucash/engine/gnc-budget.c"
       block:
-        - name: Modify ../libgnucash/engine/gnc-budget.c -- insert temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            insertbefore: "{{ item.insertbefore }}"
-            line: "{{ item.line }}"
-          with_items:
-            - insertbefore: 'static void just_get_one\(QofInstance \*ent, gpointer data\)'
-              line: '~~~ MARKER 1 ~~~'
-            # - insertbefore: ''
-            #   line: '~~~ MARKER 2 ~~~'
         - name: Modify ../libgnucash/engine/gnc-budget.c -- insert block 1
-          lineinfile:
+          blockinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 1 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - ''
-            - '/* BEGIN ANSIBLE MANAGED BLOCK 1 */'
-            - 'struct budget_match'
-            - '{'
-            - '    GncBudget   *budget;'
-            - '    const gchar *name;'
-            - '};'
-            - ''
-            - 'static void match_budget_name (QofInstance *ent, gpointer data)'
-            - '{'
-            - '    GncBudget* bgt = GNC_BUDGET(ent);'
-            - '    struct budget_match *bgt_match = (struct budget_match*) data;'
-            - ''
-            - '    if (g_strcmp0 (gnc_budget_get_name (bgt), bgt_match->name) == 0)'
-            - '    {'
-            - '        bgt_match->budget = bgt;'
-            - '    }'
-            - '}'
-            - ''
-            - 'GncBudget*'
-            - 'gnc_book_lookup_budget_by_name (const QofBook *book, const gchar *name)'
-            - '{'
-            - '    QofCollection *col;'
-            - '    struct budget_match bgt_match;'
-            - ''
-            - '    g_return_val_if_fail(book, NULL);'
-            - '    g_return_val_if_fail(name, NULL);'
-            - ''
-            - '    bgt_match.budget = NULL;'
-            - '    bgt_match.name = name;'
-            - ''
-            - '    col = qof_book_get_collection(book, GNC_ID_BUDGET);'
-            - '    qof_collection_foreach (col, match_budget_name, &bgt_match);'
-            - ''
-            - '    return bgt_match.budget;'
-            - '}'
-            - '/* END ANSIBLE MANAGED BLOCK 1 */'
-            - ''
-        # - name: Modify ../libgnucash/engine/gnc-budget.c -- insert block 2
-        #   lineinfile:
-        #     path: "{{ file_path }}"
-        #     insertbefore: '~~~ MARKER 2 ~~~'
-        #     line: "{{ item }}"
-        #   with_items:
-        #     - ''
-        #     - '/* BEGIN ANSIBLE MANAGED BLOCK 2 */'
-        #     - ''
-        #     - '/* END ANSIBLE MANAGED BLOCK 2 */'
-        - name: Modify ../libgnucash/engine/gnc-budget.c -- remove temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            line: "{{ item }}"
-            state: absent
-          with_items:
-            - '~~~ MARKER 1 ~~~'
-            # - '~~~ MARKER 2 ~~~'
+            insertbefore: 'static void just_get_one\(QofInstance \*ent, gpointer data\)'
+            marker: "# {mark} ANSIBLE MANAGED BLOCK 1"
+            block: |
+              struct budget_match
+              {
+                  GncBudget   *budget;
+                  const gchar *name;
+              };
+              
+              static void match_budget_name (QofInstance *ent, gpointer data)
+              {
+                  GncBudget* bgt = GNC_BUDGET(ent);
+                  struct budget_match *bgt_match = (struct budget_match*) data;
+              
+                  if (g_strcmp0 (gnc_budget_get_name (bgt), bgt_match->name) == 0)
+                  {
+                      bgt_match->budget = bgt;
+                  }
+              }
+              
+              GncBudget*
+              gnc_book_lookup_budget_by_name (const QofBook *book, const gchar *name)
+              {
+                  QofCollection *col;
+                  struct budget_match bgt_match;
+              
+                  g_return_val_if_fail(book, NULL);
+                  g_return_val_if_fail(name, NULL);
+              
+                  bgt_match.budget = NULL;
+                  bgt_match.name = name;
+              
+                  col = qof_book_get_collection(book, GNC_ID_BUDGET);
+                  qof_collection_foreach (col, match_budget_name, &bgt_match);
+              
+                  return bgt_match.budget;
+              }
 
     - name: Modify ../libgnucash/engine/gnc-budget.h
       vars:
