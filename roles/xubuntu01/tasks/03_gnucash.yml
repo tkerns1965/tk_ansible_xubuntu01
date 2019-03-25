@@ -219,9 +219,9 @@
       args:
         chdir: "{{ gnucash_fldr }}/BUILD"
 
-    # - name: Make gnucash
-    #   make:
-    #     chdir: "{{ gnucash_fldr }}/BUILD"
+    - name: Make gnucash
+      make:
+        chdir: "{{ gnucash_fldr }}/BUILD"
 
     # - name: Install gnucash
     #   make:
