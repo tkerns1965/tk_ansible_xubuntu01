@@ -38,14 +38,14 @@
           blockinfile:
             path: "{{ file_path }}"
             insertafter: 'option \(ALLOW_OLD_GETTEXT "allow to configure build with a gettext version older than 0.19.6. Some files will not be translated!" OFF\)'
-            marker: "# {mark} ANSIBLE MANAGED BLOCK 1"
+            marker: "## {mark} ANSIBLE MANAGED BLOCK 1 ##"
             block: |
               option (FORCE_SWIG "Force swig wrappers generation." OFF)
         - name: Modify ../CMakeLists.txt -- insert block 2
           blockinfile:
             path: "{{ file_path }}"
             insertafter: '# By default they will only be generated when building from a git worktree'
-            marker: "# {mark} ANSIBLE MANAGED BLOCK 2"
+            marker: "## {mark} ANSIBLE MANAGED BLOCK 2 ##"
             block: |
               if (FORCE_SWIG)
                 set(GENERATE_SWIG_WRAPPERS "YES")
@@ -60,7 +60,7 @@
           blockinfile:
             path: "{{ file_path }}"
             insertafter: 'set\(GENERATE_SWIG_WRAPPERS \${BUILDING_FROM_VCS} CACHE BOOL "Controls whether to generate the swig wrappers for guile and python. If not set the wrappers will only be generated when building from a git worktree"\)'
-            marker: "# {mark} ANSIBLE MANAGED BLOCK 3"
+            marker: "## {mark} ANSIBLE MANAGED BLOCK 3 ##"
             block: |
               endif()
 
@@ -133,169 +133,84 @@
       vars:
         file_path: "{{ gnucash_fldr }}/SOURCE/bindings/python/CMakeLists.txt"
       block:
-        - name: Modify ../bindings/python/CMakeLists.txt -- insert temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            insertafter: "{{ item.insertafter }}"
-            line: "{{ item.line }}"
-          with_items:
-            - insertafter: '    \${CMAKE_SOURCE_DIR}/libgnucash/engine/Account.h'
-              line: '~~~ MARKER 1 ~~~'
-            # - insertafter: ''
-            #   line: '~~~ MARKER 2 ~~~'
         - name: Modify ../bindings/python/CMakeLists.txt -- insert block 1
           lineinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 1 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - '## BEGIN ANSIBLE MANAGED BLOCK 1 ##'
-            - '    ${CMAKE_SOURCE_DIR}/libgnucash/engine/gnc-budget.h'
-            - '## END ANSIBLE MANAGED BLOCK 1 ##'
-        # - name: Modify ../bindings/python/CMakeLists.txt -- insert block 2
-        #   lineinfile:
-        #     path: "{{ file_path }}"
-        #     insertbefore: '~~~ MARKER 2 ~~~'
-        #     line: "{{ item }}"
-        #   with_items:
-        #     - '## BEGIN ANSIBLE MANAGED BLOCK 2 ##'
-        #     - ''
-        #     - '## END ANSIBLE MANAGED BLOCK 2 ##'
-        - name: Modify ../bindings/python/CMakeLists.txt -- remove temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            line: "{{ item }}"
-            state: absent
-          with_items:
-            - '~~~ MARKER 1 ~~~'
-            # - '~~~ MARKER 2 ~~~'
+            insertafter: '    \${CMAKE_SOURCE_DIR}/libgnucash/engine/Account.h'
+            marker: "## {mark} ANSIBLE MANAGED BLOCK 1 ##"
+            block: |
+              '    ${CMAKE_SOURCE_DIR}/libgnucash/engine/gnc-budget.h'
 
     - name: Modify ../bindings/python/gnucash_core.i
       vars:
         file_path: "{{ gnucash_fldr }}/SOURCE/bindings/python/gnucash_core.i"
       block:
-        - name: Modify ../bindings/python/gnucash_core.i -- insert temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            insertafter: "{{ item.insertafter }}"
-            line: "{{ item.line }}"
-          with_items:
-            - insertafter: '#include "Account.h"'
-              line: '~~~ MARKER 1 ~~~'
-            - insertafter: '%include <Account.h>'
-              line: '~~~ MARKER 2 ~~~'
         - name: Modify ../bindings/python/gnucash_core.i -- insert block 1
           lineinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 1 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - '/* BEGIN ANSIBLE MANAGED BLOCK 1 */'
-            - '#include "gnc-budget.h"'
-            - '/* END ANSIBLE MANAGED BLOCK 1 */'
+            insertafter: '#include "Account.h"'
+            marker: "/* {mark} ANSIBLE MANAGED BLOCK 1 */"
+            block: |
+              #include "gnc-budget.h"
         - name: Modify ../bindings/python/gnucash_core.i -- insert block 2
           lineinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 2 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - '/* BEGIN ANSIBLE MANAGED BLOCK 2 */'
-            - '%include <gnc-budget.h>'
-            - '/* END ANSIBLE MANAGED BLOCK 2 */'
-        - name: Modify ../bindings/python/gnucash_core.i -- remove temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            line: "{{ item }}"
-            state: absent
-          with_items:
-            - '~~~ MARKER 1 ~~~'
-            - '~~~ MARKER 2 ~~~'
+            insertafter: '%include <Account.h>'
+            marker: "/* {mark} ANSIBLE MANAGED BLOCK 2 */"
+            block: |
+              %include <gnc-budget.h>
 
     - name: Modify ../bindings/python/gnucash_core.py
       vars:
         file_path: "{{ gnucash_fldr }}/SOURCE/bindings/python/gnucash_core.py"
       block:
-        - name: Modify ../bindings/python/gnucash_core.py -- insert temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            insertafter: "{{ item.insertafter }}"
-            line: "{{ item.line }}"
-          with_items:
-            - insertafter: "    _new_instance = 'xaccMallocAccount'"
-              line: '~~~ MARKER 1 ~~~'
-            - insertafter: "Book.add_method\\('qof_book_increment_and_format_counter', 'increment_and_format_counter'\\)"
-              line: '~~~ MARKER 2 ~~~'
-            - insertafter: "    Book.get_price_db, GncPriceDB\\)"
-              line: '~~~ MARKER 3 ~~~'
-            - insertafter: "Account.name = property\\( Account.GetName, Account.SetName \\)"
-              line: '~~~ MARKER 4 ~~~'
         - name: Modify ../bindings/python/gnucash_core.py -- insert block 1
-          lineinfile:
+          blockinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 1 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - ''
-            - '## BEGIN ANSIBLE MANAGED BLOCK 1 ##'
-            - 'class GncBudget(GnuCashCoreClass): pass'
-            - '## END ANSIBLE MANAGED BLOCK 1 ##'
+            insertafter: "    _new_instance = 'xaccMallocAccount'"
+            marker: "## {mark} ANSIBLE MANAGED BLOCK 1 ##"
+            block: |
+              class GncBudget(GnuCashCoreClass): pass
         - name: Modify ../bindings/python/gnucash_core.py -- insert block 2
-          lineinfile:
+          blockinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 2 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - '## BEGIN ANSIBLE MANAGED BLOCK 2 ##'
-            - "Book.add_method('gnc_book_get_default_budget', 'get_default_budget')"
-            - "Book.add_method('gnc_book_lookup_budget_by_guid', 'lookup_budget_by_guid')"
-            - "Book.add_method('gnc_book_lookup_budget_by_name', 'lookup_budget_by_name')"
-            - '## END ANSIBLE MANAGED BLOCK 2 ##'
+            insertafter: "Book.add_method\\('qof_book_increment_and_format_counter', 'increment_and_format_counter'\\)"
+            marker: "## {mark} ANSIBLE MANAGED BLOCK 2 ##"
+            block: |
+              Book.add_method('gnc_book_get_default_budget', 'get_default_budget')
+              Book.add_method('gnc_book_lookup_budget_by_guid', 'lookup_budget_by_guid')
+              Book.add_method('gnc_book_lookup_budget_by_name', 'lookup_budget_by_name')
         - name: Modify ../bindings/python/gnucash_core.py -- insert block 3
-          lineinfile:
+          blockinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 3 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - '## BEGIN ANSIBLE MANAGED BLOCK 3 ##'
-            - '#Functions that return GncBudget'
-            - 'Book.get_default_budget = method_function_returns_instance('
-            - '    Book.get_default_budget, GncBudget)'
-            - 'Book.lookup_budget_by_guid = method_function_returns_instance('
-            - '    Book.lookup_budget_by_guid, GncBudget)'
-            - 'Book.lookup_budget_by_name = method_function_returns_instance('
-            - '    Book.lookup_budget_by_name, GncBudget)'
-            - '## END ANSIBLE MANAGED BLOCK 3 ##'
+            insertafter: "    Book.get_price_db, GncPriceDB\\)"
+            marker: "## {mark} ANSIBLE MANAGED BLOCK 3 ##"
+            block: |
+              #Functions that return GncBudget
+              Book.get_default_budget = method_function_returns_instance(
+                  Book.get_default_budget, GncBudget)
+              Book.lookup_budget_by_guid = method_function_returns_instance(
+                  Book.lookup_budget_by_guid, GncBudget)
+              Book.lookup_budget_by_name = method_function_returns_instance(
+                  Book.lookup_budget_by_name, GncBudget)
         - name: Modify ../bindings/python/gnucash_core.py -- insert block 4
-          lineinfile:
+          blockinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 4 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - ''
-            - '## BEGIN ANSIBLE MANAGED BLOCK 4 ##'
-            - '# GncBudget'
-            - "GncBudget.add_methods_with_prefix('gnc_budget_')"
-            - ''
-            - 'budget_dict =  {'
-            - "                    'get_guid' : GUID,"
-            - "                    'get_account_period_value' : GncNumeric,"
-            - "                    'get_account_period_actual_value' : GncNumeric"
-            - '               }'
-            - ''
-            - 'methods_return_instance(GncBudget, budget_dict)'
-            - ''
-            - 'GncBudget.name = property( GncBudget.get_name, GncBudget.set_name )'
-            - '## END ANSIBLE MANAGED BLOCK 4 ##'
-        - name: Modify ../bindings/python/gnucash_core.py -- remove temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            line: "{{ item }}"
-            state: absent
-          with_items:
-            - '~~~ MARKER 1 ~~~'
-            - '~~~ MARKER 2 ~~~'
-            - '~~~ MARKER 3 ~~~'
-            - '~~~ MARKER 4 ~~~'
+            insertafter: "Account.name = property\\( Account.GetName, Account.SetName \\)"
+            marker: "## {mark} ANSIBLE MANAGED BLOCK 4 ##"
+            block: |
+              # GncBudget
+              GncBudget.add_methods_with_prefix('gnc_budget_')
+              
+              budget_dict =  {
+                                  'get_guid' : GUID,
+                                  'get_account_period_value' : GncNumeric,
+                                  'get_account_period_actual_value' : GncNumeric
+                             }
+              
+              methods_return_instance(GncBudget, budget_dict)
+              
+              GncBudget.name = property( GncBudget.get_name, GncBudget.set_name )
 
     # - name: Prepare to build gnucash
     #   command: |
