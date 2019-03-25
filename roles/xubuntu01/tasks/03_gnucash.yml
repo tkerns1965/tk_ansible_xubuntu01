@@ -72,7 +72,7 @@
           blockinfile:
             path: "{{ file_path }}"
             insertbefore: 'static void just_get_one\(QofInstance \*ent, gpointer data\)'
-            marker: "# {mark} ANSIBLE MANAGED BLOCK 1"
+            marker: "/* {mark} ANSIBLE MANAGED BLOCK 1 */"
             block: |
               struct budget_match
               {
@@ -113,57 +113,21 @@
       vars:
         file_path: "{{ gnucash_fldr }}/SOURCE/libgnucash/engine/gnc-budget.h"
       block:
-        - name: Modify ../libgnucash/engine/gnc-budget.h -- insert temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            insertafter: "{{ item.insertafter }}"
-            line: "{{ item.line }}"
-          with_items:
-            - insertafter: 'GncBudget\* gnc_budget_get_default\(QofBook \*book\);'
-              line: '~~~ MARKER 1 ~~~'
-            - insertafter: '#define  gnc_budget_lookup_direct\(g,b\) gnc_budget_lookup\(&\(g\),\(b\)\)'
-              line: '~~~ MARKER 2 ~~~'
-            - insertafter: '~~~ MARKER 2 ~~~'
-              line: '~~~ MARKER 3 ~~~'
         - name: Modify ../libgnucash/engine/gnc-budget.h -- insert block 1
-          lineinfile:
+          blockinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 1 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - ''
-            - '/* BEGIN ANSIBLE MANAGED BLOCK 1 */'
-            - '#define gnc_book_get_default_budget(b) gnc_budget_get_default((b))'
-            - '/* END ANSIBLE MANAGED BLOCK 1 */'
+            insertafter: 'GncBudget\* gnc_budget_get_default\(QofBook \*book\);'
+            marker: "/* {mark} ANSIBLE MANAGED BLOCK 1 */"
+            block: |
+              #define gnc_book_get_default_budget(b) gnc_budget_get_default((b))
         - name: Modify ../libgnucash/engine/gnc-budget.h -- insert block 2
-          lineinfile:
+          blockinfile:
             path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 2 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - ''
-            - '/* BEGIN ANSIBLE MANAGED BLOCK 2 */'
-            - '#define gnc_book_lookup_budget_by_guid(b,g) gnc_budget_lookup(&(g),(b))'
-            - '/* END ANSIBLE MANAGED BLOCK 2 */'
-        - name: Modify ../libgnucash/engine/gnc-budget.h -- insert block 3
-          lineinfile:
-            path: "{{ file_path }}"
-            insertbefore: '~~~ MARKER 3 ~~~'
-            line: "{{ item }}"
-          with_items:
-            - ''
-            - '/* BEGIN ANSIBLE MANAGED BLOCK 3 */'
-            - 'GncBudget* gnc_book_lookup_budget_by_name (const QofBook *book, const gchar *name);'
-            - '/* END ANSIBLE MANAGED BLOCK 3 */'
-        - name: Modify ../libgnucash/engine/gnc-budget.h -- remove temporary markers
-          lineinfile:
-            path: "{{ file_path }}"
-            line: "{{ item }}"
-            state: absent
-          with_items:
-            - '~~~ MARKER 1 ~~~'
-            - '~~~ MARKER 2 ~~~'
-            - '~~~ MARKER 3 ~~~'
+            insertafter: '#define  gnc_budget_lookup_direct\(g,b\) gnc_budget_lookup\(&\(g\),\(b\)\)'
+            marker: "/* {mark} ANSIBLE MANAGED BLOCK 2 */"
+            block: |
+              #define gnc_book_lookup_budget_by_guid(b,g) gnc_budget_lookup(&(g),(b))
+              GncBudget* gnc_book_lookup_budget_by_name (const QofBook *book, const gchar *name);
 
     - name: Modify ../bindings/python/CMakeLists.txt
       vars:
