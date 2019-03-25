@@ -212,12 +212,12 @@
               
               GncBudget.name = property( GncBudget.get_name, GncBudget.set_name )
 
-    # - name: Prepare to build gnucash
-    #   command: |
-    #     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DWITH_GNUCASH=ON -DWITH_PYTHON=ON -DFORCE_SWIG=ON
-    #       -DWITH_AQBANKING=OFF -DWITH_OFX=OFF -DWITH_SQL=OFF {{ gnucash_fldr }}/SOURCE/
-    #   args:
-    #     chdir: "{{ gnucash_fldr }}/BUILD"
+    - name: Prepare to build gnucash
+      command: |
+        cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DWITH_GNUCASH=ON -DWITH_PYTHON=ON -DFORCE_SWIG=ON
+          -DWITH_AQBANKING=OFF -DWITH_OFX=OFF -DWITH_SQL=OFF {{ gnucash_fldr }}/SOURCE/
+      args:
+        chdir: "{{ gnucash_fldr }}/BUILD"
 
     # - name: Make gnucash
     #   make:
