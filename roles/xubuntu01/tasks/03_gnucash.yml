@@ -55,7 +55,7 @@
             line: '  \1'
             backrefs: yes
         - name: Modify ../CMakeLists.txt -- insert block 3
-          lineinfile:
+          blockinfile:
             path: "{{ file_path }}"
             insertafter: 'set\(GENERATE_SWIG_WRAPPERS \${BUILDING_FROM_VCS} CACHE BOOL "Controls whether to generate the swig wrappers for guile and python. If not set the wrappers will only be generated when building from a git worktree"\)'
             block: |
