@@ -138,8 +138,8 @@
             path: "{{ file_path }}"
             insertafter: '    \${CMAKE_SOURCE_DIR}/libgnucash/engine/Account.h'
             marker: "## {mark} ANSIBLE MANAGED BLOCK 1 ##"
-            block: |
-              '    ${CMAKE_SOURCE_DIR}/libgnucash/engine/gnc-budget.h'
+            block: |4
+              ${CMAKE_SOURCE_DIR}/libgnucash/engine/gnc-budget.h
 
     - name: Modify ../bindings/python/gnucash_core.i
       vars:
