@@ -1,6 +1,11 @@
 ---
 - name: Include private variables
   include_vars: private.yml
+  tags: 
+    - vnc
+    - smb
+    - gnucash
+    - vscode
 
 - name: Import vnc tasks
   import_tasks: 01_vnc.yml
