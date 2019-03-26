@@ -1,6 +1,11 @@
 - name: Execute block as sudo
   become: yes
   block:
+    - name: Set login banner
+      copy:
+        src: motd
+        dest: /etc/
+
     - name: Upgrade all packages
       apt:
         force_apt_get: yes
