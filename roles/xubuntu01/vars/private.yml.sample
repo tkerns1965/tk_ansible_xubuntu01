@@ -12,3 +12,6 @@ smbmount_description: mymount_description
 smbmount_what: mymount_what
 smbmount_where: mymount_where
 smbmount_options: mymount_options
+
+gnucash_data_file: sample.gnucash
+gnucash_pdf_dir: /documents/gnucash/pdf/
