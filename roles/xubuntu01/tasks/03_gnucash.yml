@@ -230,8 +230,8 @@
 
     - name: Create /usr/local/lib/python3/dist-packages/gnucash/gnucash_filedir.py
       template:
-        src: ./templates/gnucash/gnucash_filedir.py.template
-        dest: /usr/local/lib/python3/dist-packages/gnucash/gnucash_filedir.py
+        src: gnucash_filedir.py
+        dest: /usr/local/lib/python3/dist-packages/gnucash/
         mode: 0644
 
 - name: Modify .bashrc
@@ -239,7 +239,5 @@
     path: ~/.bashrc
     insertafter: EOF
     marker: ""
-    line: "{{ item }}"
-  with_items:
-    - ""
-    - "export PYTHONPATH=/usr/local/lib/python3/dist-packages"
+    block: |
+      export PYTHONPATH=/usr/local/lib/python3/dist-packages
